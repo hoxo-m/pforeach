@@ -4,5 +4,5 @@
 #'
 #'@name pforeach
 #'@docType package
-#'@import foreach doParallel
+#'@import foreach iterators doParallel
 NULL

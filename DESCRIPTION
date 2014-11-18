@@ -11,4 +11,5 @@ Suggests:
     testthat
 Imports:
     foreach,
+    iterators,
     doParallel
