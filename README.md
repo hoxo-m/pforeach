@@ -97,7 +97,7 @@ square <- function(x) x**2
 execute <- function() {
   cl <- makeCluster(detectCores())
   registerDoParallel(cl)
-  result <- foreach(i=1:3, .combine=c, .export="square") %dopar% {
+  result <- foreach(i = 1:3, .combine=c, .export="square") %dopar% {
     square(i)
   }
   stopCluster(cl)
@@ -118,7 +118,7 @@ Using `pforeach()`:
 library(pforeach)
 square <- function(x) x**2
 execute <- function() {
-  pforeach(i=1:3)({
+  pforeach(i = 1:3)({
     square(i)
   })
 }

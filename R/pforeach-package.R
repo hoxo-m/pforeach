@@ -1,6 +1,6 @@
 #'pforeach
 #'
-#'Easy use parallel processing
+#'Easy way to parallel processing in R
 #'
 #'@name pforeach
 #'@docType package
