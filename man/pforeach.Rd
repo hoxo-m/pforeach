@@ -26,7 +26,7 @@ pforeach(..., .combine = c, .parallel = TRUE, .debug = !.parallel, .cores,
 \item{.packages}{character vector of packages that the tasks depend on.}
 }
 \description{
-Easy use parallel processing
+Easy way to parallel processing in R
 
 Parallelized foreach
 }
