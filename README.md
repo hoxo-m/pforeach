@@ -12,12 +12,12 @@ There is a parallel processing code using the `foreach` package:
 library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
-result <- foreach(i = 1:3, .combine=c) %dopar% {
+foreach(i = 1:3, .combine=c) %dopar% {
   i**2
 }
 stopCluster(cl)
-print(result)
 ```
+
 
 ```
 ## [1] 1 4 9
@@ -28,10 +28,9 @@ It can be simplified using `pforeach()` instead of `foreach()`:
 
 ```r
 library(pforeach)
-result <- pforeach(i = 1:3)({
+pforeach(i = 1:3)({
   i**2
 })
-print(result)
 ```
 
 ```
@@ -59,12 +58,12 @@ library(dplyr) # With other package
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
 # You must indicate .packages parameter.
-result <- foreach(i = 1:3, .combine=c, .packages="dplyr") %dopar% {
+foreach(i = 1:3, .combine=c, .packages="dplyr") %dopar% {
   iris[i, ] %>% select(-Species) %>% sum
 }
 stopCluster(cl)
-print(result)
 ```
+
 
 ```
 ## [1] 10.2  9.5  9.4
@@ -142,12 +141,12 @@ library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
 data <- iris[1:5, ]
-result <- foreach(row = iter(data, by="row"), .combine=c) %dopar% {
+foreach(row = iter(data, by="row"), .combine=c) %dopar% {
   sum(row[-5])
 }
 stopCluster(cl)
-print(result)
 ```
+
 
 ```
 ## [1] 10.2  9.5  9.4  9.4 10.2
@@ -159,10 +158,9 @@ Using `rows()`:
 ```r
 library(pforeach)
 data <- iris[1:5, ]
-result <- pforeach(row = rows(data))({
+pforeach(row = rows(data))({
   sum(row[-5])
 })
-print(result)
 ```
 
 ```
@@ -175,10 +173,9 @@ Using `cols()`:
 ```r
 library(pforeach)
 data <- iris[1:5, ]
-result <- pforeach(col = cols(data))({
+pforeach(col = cols(data))({
   mean(col)
 })
-print(result)
 ```
 
 ```
