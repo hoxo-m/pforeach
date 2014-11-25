@@ -1,9 +1,9 @@
-# Easy way to parallel processing in R
+# An easy way to parallel processing in R
 Koji MAKIYAMA  
 
 
 
-## Overture
+## Overview
 
 There is a parallel processing code using the `foreach` package:
 
@@ -93,6 +93,7 @@ Using `foreach()`:
 
 ```r
 # You must indicate .export parameter. 
+library(doParallel)
 square <- function(x) x**2
 execute <- function() {
   cl <- makeCluster(detectCores())
@@ -129,7 +130,60 @@ execute()
 ## [1] 1 4 9
 ```
 
-### Row and Column
+### Rows and Columns
+
+Iterations for data frame can simplify using `rows()` and `cols()` instead of `iterators::iter()`.
+
+Using `iter()`:
+
+
+```r
+library(doParallel)
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+data <- iris[1:5, ]
+result <- foreach(row = iter(data, by="row"), .combine=c) %dopar% {
+  sum(row[-5])
+}
+stopCluster(cl)
+print(result)
+```
+
+```
+## [1] 10.2  9.5  9.4  9.4 10.2
+```
+
+Using `rows()`:
+
+
+```r
+library(pforeach)
+data <- iris[1:5, ]
+result <- pforeach(row = rows(data))({
+  sum(row[-5])
+})
+print(result)
+```
+
+```
+## [1] 10.2  9.5  9.4  9.4 10.2
+```
+
+Using `cols()`:
+
+
+```r
+library(pforeach)
+data <- iris[1:5, ]
+result <- pforeach(col = cols(data))({
+  mean(col)
+})
+print(result)
+```
+
+```
+## [1] 4.86 3.28 1.40 0.20   NA
+```
 
 ## Options
 

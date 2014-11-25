@@ -1,11 +1,11 @@
 Package: pforeach
 Type: Package
-Title: Easy way to parallel processing in R
+Title: An easy way to parallel processing in R
 Version: 1.0
 Date: 2014-11-13
 Author: Koji MAKIYAMA(@hoxo_m)
 Maintainer: Koji MAKIYAMA <hoxo.smile@gmail.com>
-Description: Easy way to parallel processing in R
+Description: An easy way to parallel processing in R
 License: MIT
 Suggests:
     testthat
