@@ -24,7 +24,7 @@ foreach(i = 1:3, .combine=c) %dopar% {
 stopCluster(cl)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache=TRUE}
 library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
@@ -36,7 +36,7 @@ stopCluster(cl)
 
 It can be simplified using `pforeach()` instead of `foreach()`:
 
-```{r}
+```{r, cache=TRUE}
 library(pforeach)
 pforeach(i = 1:3)({
   i**2
@@ -68,7 +68,7 @@ foreach(i = 1:3, .combine=c, .packages="dplyr") %dopar% {
 stopCluster(cl)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache=TRUE}
 library(doParallel)
 library(dplyr) # With other package
 cl <- makeCluster(detectCores())
@@ -82,7 +82,7 @@ stopCluster(cl)
 
 Using `pforeach()`:
 
-```{r}
+```{r, cache=TRUE}
 library(pforeach)
 library(dplyr) # With other package
 # You need not to mind that.
@@ -95,7 +95,7 @@ pforeach(i = 1:3)({
 
 Using `foreach()`:
 
-```{r}
+```{r, cache=TRUE}
 # You must indicate .export parameter. 
 library(doParallel)
 square <- function(x) x**2
@@ -113,7 +113,7 @@ execute()
 
 Using `pforeach()`:
 
-```{r}
+```{r, cache=TRUE}
 # Need not to mind!
 library(pforeach)
 square <- function(x) x**2
@@ -142,7 +142,7 @@ foreach(row = iter(data, by="row"), .combine=c) %dopar% {
 stopCluster(cl)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache=TRUE}
 library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
@@ -155,7 +155,7 @@ stopCluster(cl)
 
 Using `rows()`:
 
-```{r}
+```{r, cache=TRUE}
 library(pforeach)
 data <- iris[1:5, ]
 pforeach(row = rows(data))({
@@ -165,7 +165,7 @@ pforeach(row = rows(data))({
 
 Using `cols()`:
 
-```{r}
+```{r, cache=TRUE}
 library(pforeach)
 data <- iris[1:5, ]
 pforeach(col = cols(data))({
@@ -176,6 +176,22 @@ pforeach(col = cols(data))({
 ## Options
 
 ### Cores
+
+You can indicate number of cores for parallel processing with `.cores` parameter.
+
+```{r, eval=FALSE}
+pforeach(i = 1:3, .cores = 2)({
+  i**2
+})
+```
+
+If you set minus value to `.cores` for example `.cores = -1`, it means `.cores = detectCores() - 1`.
+
+```{r, eval=FALSE}
+pforeach(i = 1:3, .cores = -1)({
+  i**2
+})
+```
 
 ### Fix random seed
 

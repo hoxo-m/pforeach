@@ -186,6 +186,24 @@ pforeach(col = cols(data))({
 
 ### Cores
 
+You can indicate number of cores for parallel processing with `.cores` parameter.
+
+
+```r
+pforeach(i = 1:3, .cores = 2)({
+  i**2
+})
+```
+
+If you set minus value to `.cores` for example `.cores = -1`, it means `.cores = detectCores() - 1`.
+
+
+```r
+pforeach(i = 1:3, .cores = -1)({
+  i**2
+})
+```
+
 ### Fix random seed
 
 ### Do not parallel
