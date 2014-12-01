@@ -8,7 +8,9 @@ Maintainer: Koji MAKIYAMA <hoxo.smile@gmail.com>
 Description: An easy way to parallel processing in R
 License: MIT
 Suggests:
-    testthat
+    testthat,
+    kernlab,
+    randomForest
 Imports:
     foreach,
     iterators,

@@ -1,4 +1,4 @@
-# An easy way to parallel processing in R
+# pforeach - An easy way to parallel processing in R
 Koji MAKIYAMA  
 
 
@@ -207,3 +207,64 @@ pforeach(i = 1:3, .cores = -1)({
 ### Fix random seed
 
 ### Do not parallel
+
+## Application
+
+Parallelized random forest code with `foreach` is below:
+
+
+```r
+library(doParallel)
+library(randomForest)
+library(kernlab)
+
+data(spam)
+cores <- 4
+
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, .export="spam", .packages="randomForest") %dopar% {
+  randomForest(type ~ ., data = spam, ntree = ntree)
+}
+
+stopCluster(cl)
+
+print(fit.rf)
+```
+
+```
+## 
+## Call:
+##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
+##                Type of random forest: classification
+##                      Number of trees: 1000
+## No. of variables tried at each split: 7
+```
+
+Using `pforeach`:
+
+
+```r
+library(pforeach)
+library(randomForest)
+library(kernlab)
+
+data(spam)
+cores <- 4
+
+fit.rf <- pforeach(ntree=rep(250, cores), .combine=combine, .cores=cores)({
+  randomForest(type ~ ., data = spam, ntree = ntree)
+})
+
+print(fit.rf)
+```
+
+```
+## 
+## Call:
+##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
+##                Type of random forest: classification
+##                      Number of trees: 1000
+## No. of variables tried at each split: 7
+```
