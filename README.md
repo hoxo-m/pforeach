@@ -206,6 +206,26 @@ pforeach(i = 1:3, .cores = -1)({
 
 ### Fix random seed
 
+If you have not installed `doRNG` package:
+
+
+```r
+install.packages("doRNG")
+```
+
+
+```r
+library(pforeach)
+pforeach(i = 1:3, .seed = 12345)({
+  rnorm(1)
+})
+```
+
+
+```
+## [1]  0.74543208 -0.06047583 -0.40346641
+```
+
 ### Do not parallel
 
 ## Application
@@ -233,15 +253,6 @@ stopCluster(cl)
 print(fit.rf)
 ```
 
-```
-## 
-## Call:
-##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
-##                Type of random forest: classification
-##                      Number of trees: 1000
-## No. of variables tried at each split: 7
-```
-
 Using `pforeach`:
 
 
@@ -258,13 +269,4 @@ fit.rf <- pforeach(ntree=rep(250, cores), .combine=combine, .cores=cores)({
 })
 
 print(fit.rf)
-```
-
-```
-## 
-## Call:
-##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
-##                Type of random forest: classification
-##                      Number of trees: 1000
-## No. of variables tried at each split: 7
 ```
