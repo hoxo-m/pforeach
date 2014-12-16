@@ -172,14 +172,14 @@ Using `cols()`:
 
 ```r
 library(pforeach)
-data <- iris[1:5, ]
+data <- iris[1:4, ]
 pforeach(col = cols(data))({
   mean(col)
 })
 ```
 
 ```
-## [1] 4.86 3.28 1.40 0.20   NA
+## [1] 4.825 3.200 1.400 0.200    NA
 ```
 
 ## Options
@@ -210,11 +210,6 @@ If you have not installed `doRNG` package:
 
 
 ```r
-install.packages("doRNG")
-```
-
-
-```r
 library(pforeach)
 pforeach(i = 1:3, .seed = 12345)({
   rnorm(1)
@@ -223,7 +218,7 @@ pforeach(i = 1:3, .seed = 12345)({
 
 
 ```
-## [1]  0.74543208 -0.06047583 -0.40346641
+## [1]  0.74543 -0.06048 -0.40347
 ```
 
 ### Do not parallel
@@ -264,7 +259,7 @@ library(kernlab)
 data(spam)
 cores <- 4
 
-fit.rf <- pforeach(ntree=rep(250, cores), .combine=combine, .cores=cores)({
+fit.rf <- pforeach(ntree=rep(250, cores), .c=combine, .cores=cores)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
 

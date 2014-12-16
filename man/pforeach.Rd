@@ -5,11 +5,16 @@
 \alias{pforeach-package}
 \title{pforeach}
 \usage{
-pforeach(..., .combine = c, .parallel = TRUE, .debug = !.parallel, .cores,
-  .seed = NULL, .export, .packages)
+pforeach(..., .c, .combine = c, .parallel = TRUE, .debug = !.parallel,
+  .cores, .seed = NULL, .init, .final = NULL, .inorder = TRUE,
+  .multicombine = FALSE, .maxcombine = if (.multicombine) 100 else 2,
+  .errorhandling = c("pass", "stop", "remove"), .packages = NULL,
+  .export = NULL, .noexport = NULL, .verbose = FALSE)
 }
 \arguments{
 \item{...}{input for foreach.}
+
+\item{.c}{the relief of .combine parameter.}
 
 \item{.combine}{function that is used to process the tasks results as they generated.}
 
@@ -21,9 +26,9 @@ pforeach(..., .combine = c, .parallel = TRUE, .debug = !.parallel, .cores,
 
 \item{.seed}{random number seed.}
 
-\item{.export}{character vector of variables to export.}
-
 \item{.packages}{character vector of packages that the tasks depend on.}
+
+\item{.export}{character vector of variables to export.}
 }
 \description{
 Easy way to parallel processing in R

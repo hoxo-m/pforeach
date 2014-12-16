@@ -2,6 +2,7 @@
 #'
 #'@param ... input for foreach.
 #'@param .combine function that is used to process the tasks results as they generated.
+#'@param .c the relief of .combine parameter.
 #'@param .parallel if TRUE, execute parallel processing.
 #'@param .debug if TRUE, execute sequential processing(not parallel).
 #'@param .cores number of cores for paralell processing.
@@ -10,7 +11,15 @@
 #'@param .packages character vector of packages that the tasks depend on.
 #'
 #'@export
-pforeach <- function(..., .combine=c, .parallel=TRUE, .debug=!.parallel, .cores, .seed=NULL, .export, .packages) {
+pforeach <- function(..., .c, .combine=c, 
+                     .parallel=TRUE, .debug=!.parallel, 
+                     .cores, .seed=NULL,
+                     .init, .final=NULL, .inorder=TRUE,
+                     .multicombine=FALSE,
+                     .maxcombine=if (.multicombine) 100 else 2,
+                     .errorhandling=c('pass', 'stop', 'remove'),
+                     .packages=NULL, .export=NULL, .noexport=NULL,
+                     .verbose=FALSE) {
   if(!.parallel || .debug) {
     foreach::registerDoSEQ()
     if(!is.null(.seed)) set.seed(.seed)
@@ -19,8 +28,9 @@ pforeach <- function(..., .combine=c, .parallel=TRUE, .debug=!.parallel, .cores,
     else if(.cores <= 0) .cores=parallel::detectCores() + .cores
     doParallel::registerDoParallel(.cores)
   }
-  if(missing(.export)) .export=ls(parent.frame(1000))
-  if(missing(.packages)) .packages=loadedNamespaces()
+  if(is.null(.export)) .export=ls(parent.frame(1000))
+  if(is.null(.packages)) .packages=loadedNamespaces()
+  if(!missing(.c)) .combine=.c
   return(function(expr) {
     expr <- substitute(expr)
     on.exit(stopImplicitCluster2())
