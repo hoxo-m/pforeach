@@ -167,7 +167,7 @@ Using `cols()`:
 
 ```{r, cache=TRUE}
 library(pforeach)
-data <- iris[1:4, ]
+data <- iris[, 1:4]
 pforeach(col = cols(data))({
   mean(col)
 })
@@ -212,6 +212,15 @@ pforeach(i = 1:3, .seed = 12345)({
 ```
 
 ### Do not parallel
+
+If you want to change a parallel code to a non-parallel code with `pforeach`, you just only add one character "n".
+
+```{r}
+library(pforeach)
+npforeach(i = 1:3)({
+  i**2
+})
+```
 
 ## Application
 

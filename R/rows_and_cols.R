@@ -15,3 +15,21 @@ rows <- function(df) {
 cols <- function(df) {
   iterators::iter(df, by="col")
 }
+
+#'Iterator for row number of a data frame
+#'
+#'@param df a data frame
+#'
+#'@export
+irows <- function(df) {
+  iterators::icount(nrow(df))
+}
+
+#'Iterator for column number of a data frame
+#'
+#'@param df a data frame
+#'
+#'@export
+icols <- function(df) {
+  iterators::icount(ncol(df))
+}
