@@ -226,13 +226,13 @@ npforeach(i = 1:3)({
 
 Parallelized random forest code with `foreach` is below:
 
-```{r, cache=TRUE, eval=FALSE}
+```{r, cache=TRUE, eval=TRUE}
 library(doParallel)
 library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
+cores <- detectCores()
 
 cl <- makePSOCKcluster(cores)
 registerDoParallel(cl)
@@ -248,15 +248,14 @@ print(fit.rf)
 
 Using `pforeach`:
 
-```{r, cache=TRUE, eval=FALSE}
+```{r, cache=TRUE, eval=TRUE}
 library(pforeach)
 library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
 
-fit.rf <- pforeach(ntree=rep(250, cores), .c=combine, .cores=cores)({
+fit.rf <- pforeach(ntree=rep(250, .cores), .c=combine)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
 

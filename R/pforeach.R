@@ -31,6 +31,8 @@ pforeach <- function(..., .c, .combine=c,
   if(is.null(.export)) .export=ls(parent.frame(1000))
   if(is.null(.packages)) .packages=loadedNamespaces()
   if(!missing(.c)) .combine=.c
+  if(missing(.init)) .init=NULL
+  .errorhandling = match.arg(.errorhandling)
   return(function(expr) {
     expr <- substitute(expr)
     on.exit(stopImplicitCluster2())
@@ -40,6 +42,22 @@ pforeach <- function(..., .c, .combine=c,
       set.seed(.seed)
       `%doop%` <- doRNG::`%dorng%`
     }
-    foreach(..., .combine=.combine, .export=.export, .packages=.packages) %doop% eval(expr)
+    if(is.null(.init)) {
+      foreach(..., .combine=.combine, 
+              .final=.final, .inorder=.inorder,
+              .multicombine=.multicombine,
+              .maxcombine=.maxcombine,
+              .errorhandling=.errorhandling,
+              .packages=.packages, .export=.export, .noexport=.noexport,
+              .verbose=.verbose) %doop% eval(expr)
+    } else {
+      foreach(..., .combine=.combine,
+              .init=.init, .final=.final, .inorder=.inorder,
+              .multicombine=.multicombine,
+              .maxcombine=.maxcombine,
+              .errorhandling=.errorhandling,
+              .packages=.packages, .export=.export, .noexport=.noexport,
+              .verbose=.verbose) %doop% eval(expr)
+    }
   })
 }

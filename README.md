@@ -248,7 +248,7 @@ library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
+cores <- detectCores()
 
 cl <- makePSOCKcluster(cores)
 registerDoParallel(cl)
@@ -262,6 +262,15 @@ stopCluster(cl)
 print(fit.rf)
 ```
 
+```
+## 
+## Call:
+##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
+##                Type of random forest: classification
+##                      Number of trees: 1000
+## No. of variables tried at each split: 7
+```
+
 Using `pforeach`:
 
 
@@ -271,11 +280,19 @@ library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
 
-fit.rf <- pforeach(ntree=rep(250, cores), .c=combine, .cores=cores)({
+fit.rf <- pforeach(ntree=rep(250, .cores), .c=combine)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
 
 print(fit.rf)
+```
+
+```
+## 
+## Call:
+##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
+##                Type of random forest: classification
+##                      Number of trees: 1000
+## No. of variables tried at each split: 7
 ```
