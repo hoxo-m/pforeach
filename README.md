@@ -258,17 +258,6 @@ fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, .export="spam", .pack
 }
 
 stopCluster(cl)
-
-print(fit.rf)
-```
-
-```
-## 
-## Call:
-##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
-##                Type of random forest: classification
-##                      Number of trees: 1000
-## No. of variables tried at each split: 7
 ```
 
 Using `pforeach`:
@@ -284,15 +273,4 @@ data(spam)
 fit.rf <- pforeach(ntree=rep(250, .cores), .c=combine)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
-
-print(fit.rf)
-```
-
-```
-## 
-## Call:
-##  randomForest(formula = type ~ ., data = spam, ntree = ntree) 
-##                Type of random forest: classification
-##                      Number of trees: 1000
-## No. of variables tried at each split: 7
 ```

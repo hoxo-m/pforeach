@@ -226,7 +226,7 @@ npforeach(i = 1:3)({
 
 Parallelized random forest code with `foreach` is below:
 
-```{r, cache=TRUE, eval=TRUE}
+```{r, cache=TRUE, eval=FALSE}
 library(doParallel)
 library(randomForest)
 library(kernlab)
@@ -242,13 +242,11 @@ fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, .export="spam", .pack
 }
 
 stopCluster(cl)
-
-print(fit.rf)
 ```
 
 Using `pforeach`:
 
-```{r, cache=TRUE, eval=TRUE}
+```{r, cache=TRUE, eval=FALSE}
 library(pforeach)
 library(randomForest)
 library(kernlab)
@@ -258,6 +256,4 @@ data(spam)
 fit.rf <- pforeach(ntree=rep(250, .cores), .c=combine)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
-
-print(fit.rf)
 ```
