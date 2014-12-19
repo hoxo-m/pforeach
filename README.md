@@ -1,4 +1,4 @@
-# pforeach - An easy way to parallel processing in R
+# pforeach - Easy to parallel processing in R
 Koji MAKIYAMA  
 
 

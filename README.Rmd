@@ -1,5 +1,5 @@
 ---
-title: "pforeach - An easy way to parallel processing in R"
+title: "pforeach - Easy to parallel processing in R"
 author: "Koji MAKIYAMA"
 output:
   html_document:
