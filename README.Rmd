@@ -237,7 +237,8 @@ cores <- detectCores()
 cl <- makePSOCKcluster(cores)
 registerDoParallel(cl)
 
-fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, .export="spam", .packages="randomForest") %dopar% {
+fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, 
+                  .export="spam", .packages="randomForest") %dopar% {
   randomForest(type ~ ., data = spam, ntree = ntree)
 }
 
