@@ -195,7 +195,7 @@ pforeach(i = 1:3, .cores = -1)({
 
 ### Fix random seed
 
-If you have not installed `doRNG` package:
+If you want to fix random seed, set `.seed` parameter:
 
 ```{r, eval=FALSE}
 library(pforeach)
@@ -213,7 +213,7 @@ pforeach(i = 1:3, .seed = 12345)({
 
 ### Do not parallel
 
-If you want to change a parallel code to a non-parallel code with `pforeach`, you just only add one character "n".
+If you want to change a parallel code to the non-parallel code with `pforeach`, you just only add one character "n".
 
 ```{r}
 library(pforeach)
