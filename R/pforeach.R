@@ -32,8 +32,8 @@ pforeach <- function(..., .c, .combine=c,
   if(is.null(.packages)) .packages=loadedNamespaces()
   if(missing(.init)) .init=NULL
   if(!missing(.c)) {
-    if(.c==list || .c=="list") {
-      .combine=append
+    if(identical(.c, list) || identical(.c, "list")) {
+      .combine=foreach:::defcombine
       .init=list()
     } else {
       .combine=.c

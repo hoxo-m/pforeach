@@ -14,7 +14,7 @@ pforeach(..., .c, .combine = c, .parallel = TRUE, .debug = !.parallel,
 \arguments{
 \item{...}{input for foreach.}
 
-\item{.c}{the relief of .combine parameter.}
+\item{.c}{the relief of .combine parameter. Additionally .c=list means list combine that is deafault on foreach.}
 
 \item{.combine}{function that is used to process the tasks results as they generated.}
 
