@@ -2,7 +2,7 @@
 #'
 #'@param ... input for foreach.
 #'@param .combine function that is used to process the tasks results as they generated.
-#'@param .c the relief of .combine parameter.
+#'@param .c the relief of .combine parameter. Additionally .c=list means list combine that is deafault on foreach.
 #'@param .parallel if TRUE, execute parallel processing.
 #'@param .debug if TRUE, execute sequential processing(not parallel).
 #'@param .cores number of cores for paralell processing.
@@ -30,7 +30,14 @@ pforeach <- function(..., .c, .combine=c,
   }
   if(is.null(.export)) .export=ls(parent.frame(1000))
   if(is.null(.packages)) .packages=loadedNamespaces()
-  if(!missing(.c)) .combine=.c
+  if(!missing(.c)) {
+    if(.c==list || .c=="list") {
+      .combine=append
+      .init=list()
+    } else {
+      .combine=.c
+    }
+  }
   return(function(expr) {
     expr <- substitute(expr)
     on.exit(stopImplicitCluster2())
