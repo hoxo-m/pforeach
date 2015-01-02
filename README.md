@@ -1,4 +1,4 @@
-# pforeach - An easy way to parallel processing in R
+# pforeach - Easy to parallel processing in R
 Koji MAKIYAMA  
 
 
@@ -206,7 +206,7 @@ pforeach(i = 1:3, .cores = -1)({
 
 ### Fix random seed
 
-If you have not installed `doRNG` package:
+If you want to fix random seed, set `.seed` parameter:
 
 
 ```r
@@ -223,7 +223,7 @@ pforeach(i = 1:3, .seed = 12345)({
 
 ### Do not parallel
 
-If you want to change a parallel code to a non-parallel code with `pforeach`, you just only add one character "n".
+If you want to change a parallel code to the non-parallel code with `pforeach`, you just only add one character "n".
 
 
 ```r
@@ -248,18 +248,17 @@ library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
+cores <- detectCores()
 
 cl <- makePSOCKcluster(cores)
 registerDoParallel(cl)
 
-fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, .export="spam", .packages="randomForest") %dopar% {
+fit.rf <- foreach(ntree=rep(250, cores), .combine=combine, 
+                  .export="spam", .packages="randomForest") %dopar% {
   randomForest(type ~ ., data = spam, ntree = ntree)
 }
 
 stopCluster(cl)
-
-print(fit.rf)
 ```
 
 Using `pforeach`:
@@ -271,11 +270,8 @@ library(randomForest)
 library(kernlab)
 
 data(spam)
-cores <- 4
 
-fit.rf <- pforeach(ntree=rep(250, cores), .c=combine, .cores=cores)({
+fit.rf <- pforeach(ntree=rep(250, .cores), .c=combine)({
   randomForest(type ~ ., data = spam, ntree = ntree)
 })
-
-print(fit.rf)
 ```
