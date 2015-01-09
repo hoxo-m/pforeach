@@ -34,3 +34,14 @@ test_that("default combine", {
   })
   expect_equal(act, c(1,1,2,1,2,3))
 })
+
+test_that("enclosed", {
+  execute <- function() {
+    ppp <- 1:3
+    npforeach(i = ppp)({
+      i**2
+    })
+  }
+  act <- execute()
+  expect_equal(act, c(1,4,9))
+})

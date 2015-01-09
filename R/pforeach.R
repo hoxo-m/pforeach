@@ -28,7 +28,19 @@ pforeach <- function(..., .c, .combine=c,
     else if(.cores <= 0) .cores=parallel::detectCores() + .cores
     doParallel::registerDoParallel(.cores)
   }
-  if(is.null(.export)) .export=ls(parent.frame(1000))
+  .frames <- rev(Map(sys.frame, sys.parents()))
+  for(.frame in .frames) {
+    .var_names <- ls(.frame)
+    if(identical(.var_names, c("enclos","envir","expr"))) {
+      break
+    }
+    for(.name in .var_names) {
+      if(!exists(.name, inherits = FALSE)) {
+        assign(.name, get(.name, envir = .frame))
+      }
+    }
+  }
+  if(is.null(.export)) .export=ls()
   if(is.null(.packages)) .packages=loadedNamespaces()
   if(missing(.init)) .init=NULL
   if(!missing(.c)) {

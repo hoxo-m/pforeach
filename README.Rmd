@@ -7,14 +7,14 @@ output:
 ---
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
 ## Overview
 
 There is a parallel processing code using the `foreach` package:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, cache=TRUE}
 library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
@@ -36,7 +36,7 @@ stopCluster(cl)
 
 It can be simplified using `pforeach()` instead of `foreach()`:
 
-```{r, cache=TRUE}
+```{r}
 library(pforeach)
 pforeach(i = 1:3)({
   i**2
@@ -56,7 +56,7 @@ devtools::install_github("hoxo-m/pforeach")
 
 Using `foreach()`:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, cache=TRUE}
 library(doParallel)
 library(dplyr) # With other package
 cl <- makeCluster(detectCores())
@@ -82,7 +82,7 @@ stopCluster(cl)
 
 Using `pforeach()`:
 
-```{r, cache=TRUE}
+```{r}
 library(pforeach)
 library(dplyr) # With other package
 # You need not to mind that.
@@ -113,7 +113,7 @@ execute()
 
 Using `pforeach()`:
 
-```{r, cache=TRUE}
+```{r}
 # Need not to mind!
 library(pforeach)
 square <- function(x) x**2
@@ -131,7 +131,7 @@ Iterations for data frame can simplify using `rows()` and `cols()` instead of `i
 
 Using `iter()`:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, cache=TRUE}
 library(doParallel)
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
@@ -155,7 +155,7 @@ stopCluster(cl)
 
 Using `rows()`:
 
-```{r, cache=TRUE}
+```{r}
 library(pforeach)
 data <- iris[1:5, ]
 pforeach(row = rows(data))({
@@ -165,7 +165,7 @@ pforeach(row = rows(data))({
 
 Using `cols()`:
 
-```{r, cache=TRUE}
+```{r}
 library(pforeach)
 data <- iris[, 1:4]
 pforeach(col = cols(data))({
@@ -204,7 +204,7 @@ pforeach(i = 1:3, .seed = 12345)({
 })
 ```
 
-```{r, cache=TRUE, echo=FALSE}
+```{r, echo=FALSE}
 library(pforeach)
 pforeach(i = 1:3, .seed = 12345)({
   rnorm(1)
@@ -247,7 +247,7 @@ stopCluster(cl)
 
 Using `pforeach`:
 
-```{r, cache=TRUE, eval=FALSE}
+```{r, eval=FALSE}
 library(pforeach)
 library(randomForest)
 library(kernlab)
