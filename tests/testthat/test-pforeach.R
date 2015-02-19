@@ -1,6 +1,6 @@
 context("Test for pforeach")
 
-test <- TRUE
+test <- FALSE
 if(test) {
   test_that("Order of loaded packages", {
     library(plyr)
