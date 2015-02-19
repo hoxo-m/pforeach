@@ -1,7 +1,16 @@
 context("Test for pforeach")
 
-test <- FALSE
+test <- TRUE
 if(test) {
+  test_that("Order of loaded packages", {
+    library(plyr)
+    library(dplyr)
+    act <- pforeach(i = 1:3)({
+      iris %>% summarize(count=n())
+    })$count
+    expect_equal(act, 150)
+  })
+  
   test_that("Default action", {
     act <- pforeach(i = 1:3)({
       i**2
@@ -27,7 +36,7 @@ if(test) {
     act <- execute()
     expect_equal(act, c(1, 4, 9))
   })
-
+  
   test_that("Enclosed variable2", {
     execute <- function() {
       ppp <- 1:3
@@ -52,4 +61,5 @@ if(test) {
     })
     expect_equal(act, c(876.5, 458.6, 563.7, 179.9))
   })
+  
 }

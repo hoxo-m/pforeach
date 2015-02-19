@@ -41,7 +41,15 @@ pforeach <- function(..., .c, .combine=c,
     }
   }
   if(is.null(.export)) .export=ls()
-  if(is.null(.packages)) .packages=loadedNamespaces()
+  if(is.null(.packages)) {
+    namespaces <- loadedNamespaces()
+    dplyr_pos <- Position(function(x) x=="dplyr", namespaces)
+    if(is.na(dplyr_pos)) {
+      .packages=namespaces
+    } else {
+      .packages=c(namespaces[-dplyr_pos], "dplyr")
+    }
+  }
   if(missing(.init)) .init=NULL
   if(!missing(.c)) {
     if(identical(.c, list) || identical(.c, "list")) {
