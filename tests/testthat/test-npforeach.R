@@ -45,3 +45,20 @@ test_that("enclosed", {
   act <- execute()
   expect_equal(act, c(1,4,9))
 })
+
+test_that("Order of loaded packages", {
+  library(plyr)
+  library(dplyr)
+  act <- npforeach(i = 1:3)({
+    iris %>% summarize(count=n())
+  })$count
+  expect_equal(act, 150)
+})
+
+test_that("Packages action", {
+  library(dplyr)
+  act <- npforeach(i=1:3)({
+    iris[i, ] %>% select(-Species) %>% sum
+  })
+  expect_equal(act, c(10.2, 9.5, 9.4))
+})

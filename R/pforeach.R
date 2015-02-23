@@ -27,6 +27,15 @@ pforeach <- function(..., .c, .combine=c,
     if(missing(.cores)) .cores=parallel::detectCores()
     else if(.cores <= 0) .cores=parallel::detectCores() + .cores
     doParallel::registerDoParallel(.cores)
+    if(is.null(.packages)) {
+      namespaces <- loadedNamespaces()
+      dplyr_pos <- Position(function(x) x=="dplyr", namespaces)
+      if(is.na(dplyr_pos)) {
+        .packages=namespaces
+      } else {
+        .packages=c(namespaces[-dplyr_pos], "dplyr")
+      }
+    }
   }
   .frames <- rev(Map(sys.frame, sys.parents()))
   for(.frame in .frames) {
@@ -41,15 +50,6 @@ pforeach <- function(..., .c, .combine=c,
     }
   }
   if(is.null(.export)) .export=ls()
-  if(is.null(.packages)) {
-    namespaces <- loadedNamespaces()
-    dplyr_pos <- Position(function(x) x=="dplyr", namespaces)
-    if(is.na(dplyr_pos)) {
-      .packages=namespaces
-    } else {
-      .packages=c(namespaces[-dplyr_pos], "dplyr")
-    }
-  }
   if(missing(.init)) .init=NULL
   if(!missing(.c)) {
     if(identical(.c, list) || identical(.c, "list")) {
