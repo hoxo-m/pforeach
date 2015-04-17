@@ -50,6 +50,7 @@ pforeach <- function(..., .c, .combine=c,
     }
   }
   if(is.null(.export)) .export=ls()
+  .export <- c(.export, ".my_var_list")
   if(missing(.init)) .init=NULL
   if(!missing(.c)) {
     if(identical(.c, list) || identical(.c, "list")) {
@@ -60,31 +61,35 @@ pforeach <- function(..., .c, .combine=c,
     }
   }
   .errorhandling = match.arg(.errorhandling)
-  return(function(expr) {
-    expr <- substitute(expr)
+  return(function(.expr) {
+    .my_env <- parent.frame()
+    .my_var_list <- Filter(function(x) !grepl("%", x), ls(env=.my_env))
+    .my_var_list <- Map(function(name) eval(parse(text=name), env=.my_env) ,.my_var_list)
+    .expr <- paste(deparse(substitute(.expr)), collapse="\n")
+    .expr <- parse(text=sprintf(".my_env <- environment(); Map(function(x, y, z) assign(x, y, envir=z), names(.my_var_list), .my_var_list, rep(list(.my_env), length(.my_var_list))); %s", .expr))
     on.exit(stopImplicitCluster2())
-    `%doop%` <- foreach::`%dopar%`
+    .doop <- foreach::`%dopar%`
     if(!is.null(.seed)) {
       if(!require(doRNG)) stop("install.packages('doRNG')")
       set.seed(.seed)
-      `%doop%` <- doRNG::`%dorng%`
+      .doop <- doRNG::`%dorng%`
     }
     if(is.null(.init)) {
-      foreach(..., .combine=.combine, 
+      .doop(foreach(..., .combine=.combine, 
               .final=.final, .inorder=.inorder,
               .multicombine=.multicombine,
               .maxcombine=.maxcombine,
               .errorhandling=.errorhandling,
               .packages=.packages, .export=.export, .noexport=.noexport,
-              .verbose=.verbose) %doop% eval(expr)
+              .verbose=.verbose) , eval(.expr))
     } else {
-      foreach(..., .combine=.combine,
+      .doop(foreach(..., .combine=.combine,
               .init=.init, .final=.final, .inorder=.inorder,
               .multicombine=.multicombine,
               .maxcombine=.maxcombine,
               .errorhandling=.errorhandling,
               .packages=.packages, .export=.export, .noexport=.noexport,
-              .verbose=.verbose) %doop% eval(expr)
+              .verbose=.verbose), eval(.expr))
     }
   })
 }

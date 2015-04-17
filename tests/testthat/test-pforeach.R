@@ -61,5 +61,16 @@ if(test) {
     })
     expect_equal(act, c(876.5, 458.6, 563.7, 179.9))
   })
+
+  test_that("Triple loop", {
+    act <- pforeach(i=1:2)({
+      pforeach(j=3:4)({
+        pforeach(k=5:6)({
+          i
+        })
+      })
+    })
+    expect_equal(act, c(1, 1, 1, 1, 2, 2, 2, 2))
+  })
   
 }

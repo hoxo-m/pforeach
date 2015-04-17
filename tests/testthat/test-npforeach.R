@@ -62,3 +62,14 @@ test_that("Packages action", {
   })
   expect_equal(act, c(10.2, 9.5, 9.4))
 })
+
+test_that("Triple loop", {
+  act <- npforeach(i=1:2)({
+    npforeach(j=3:4)({
+      npforeach(k=5:6)({
+        i
+      })
+    })
+  })
+  expect_equal(act, c(1, 1, 1, 1, 2, 2, 2, 2))
+})
