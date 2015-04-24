@@ -1,10 +1,10 @@
 context("Test for pforeach")
 
-test <- FALSE
+test <- TRUE
 if(test) {
   test_that("Order of loaded packages", {
     library(plyr)
-    library(dplyr)
+    suppressMessages(library(dplyr))
     act <- pforeach(i = 1:3)({
       iris %>% summarize(count=n())
     })$count
@@ -19,7 +19,7 @@ if(test) {
   })
   
   test_that("Packages action", {
-    library(dplyr)
+    suppressMessages(library(dplyr))
     act <- pforeach(i=1:3)({
       iris[i, ] %>% select(-Species) %>% sum
     })
@@ -71,6 +71,14 @@ if(test) {
       })
     })
     expect_equal(act, c(1, 1, 1, 1, 2, 2, 2, 2))
+  })
+  
+  test_that("outer variable", {
+    i <- 1
+    act <- pforeach(i=1:2)({
+      i
+    })
+    expect_equal(act, 1:2)
   })
   
 }

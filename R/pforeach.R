@@ -66,7 +66,7 @@ pforeach <- function(..., .c, .combine=c,
     .my_var_list <- Filter(function(x) !grepl("%", x), ls(env=.my_env))
     .my_var_list <- Map(function(name) eval(parse(text=name), env=.my_env) ,.my_var_list)
     .expr <- paste(deparse(substitute(.expr)), collapse="\n")
-    .expr <- parse(text=sprintf(".my_env <- environment(); Map(function(x, y, z) assign(x, y, envir=z), names(.my_var_list), .my_var_list, rep(list(.my_env), length(.my_var_list))); %s", .expr))
+    .expr <- parse(text=paste(".my_env <- environment(); .my_var_list <- .my_var_list[!(names(.my_var_list) %in% ls())]; Map(function(x, y, z) assign(x, y, envir=z), names(.my_var_list), .my_var_list, rep(list(.my_env), length(.my_var_list)));", .expr))
     on.exit(stopImplicitCluster2())
     .doop <- foreach::`%dopar%`
     if(!is.null(.seed)) {
